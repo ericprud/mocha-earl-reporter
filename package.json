@@ -1,10 +1,10 @@
 {
-  "name": "mocha-teamcity-reporter",
+  "name": "mocha-earl-reporter",
   "engines": {
     "node": ">=4"
   },
   "version": "2.5.1",
-  "description": "teamcity reporter for mocha",
+  "description": "EARL reporter for mocha",
   "main": "./lib/teamcity.js",
   "directories": {
     "lib": "./lib"
@@ -18,27 +18,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/travisjeffery/mocha-teamcity-reporter"
+    "url": "https://github.com/travisjeffery/mocha-earl-reporter"
   },
   "keywords": [
     "mocha",
-    "teamcity",
+    "earl",
     "reporter",
     "jetbrains"
   ],
   "dependencies": {
     "mocha": ">=3.5.0"
   },
-  "author": "travis jeffery",
-  "maintainers": [
-    {
-      "name": "Jamie Sherriff",
-      "url": "https://github.com/jamie-sherriff"
-    }
-  ],
+  "author": "Eric Prud'hommeaux",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/travisjeffery/mocha-teamcity-reporter/issues"
+    "url": "https://github.com/travisjeffery/mocha-earl-reporter/issues"
   },
   "devDependencies": {
     "chai": "^4.1.2",
