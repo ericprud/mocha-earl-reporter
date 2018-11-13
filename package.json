@@ -5,26 +5,25 @@
   },
   "version": "2.5.1",
   "description": "EARL reporter for mocha",
-  "main": "./lib/teamcity.js",
+  "main": "./mocha-earl-reporter.js",
   "directories": {
     "lib": "./lib"
   },
   "scripts": {
     "test": "mocha test/functional test/programmatic",
-    "test-teamcity": "mocha test/functional test/programmatic --reporter lib/teamcity.js",
-    "test-teamcity-example": "mocha test/example/exampleSimple.js --reporter lib/teamcity.js",
+    "test-teamcity": "mocha test/functional test/programmatic --reporter mocha-earl-reporter.js",
+    "test-teamcity-example": "mocha test/example/exampleSimple.js --reporter mocha-earl-reporter.js",
     "lint": "eslint lib/*.js test/**/*.js",
     "lint-fix": "eslint --fix lib/*.js test/**/*.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/travisjeffery/mocha-earl-reporter"
+    "url": "https://github.com/ericprud/mocha-earl-reporter"
   },
   "keywords": [
     "mocha",
     "earl",
-    "reporter",
-    "jetbrains"
+    "reporter"
   ],
   "dependencies": {
     "mocha": ">=3.5.0"
@@ -32,7 +31,7 @@
   "author": "Eric Prud'hommeaux",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/travisjeffery/mocha-earl-reporter/issues"
+    "url": "https://github.com/ericprud/mocha-earl-reporter/issues"
   },
   "devDependencies": {
     "chai": "^4.1.2",

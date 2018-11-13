@@ -44,10 +44,7 @@ Then call mocha with:
 `mocha --reporter mocha-teamcity-reporter test`
 
 ## Running In Browser
-* Use `lib/teamcityBrowser`
-* Has option parsing stripped out for the moment
-* Example use can be found in `test\browser`
-* Custom log function can be set with window.customLogFunction
+Not supported
 
 ## Customisation:
 

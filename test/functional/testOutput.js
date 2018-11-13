@@ -16,7 +16,7 @@ describe('Check TeamCity Output is correct', function () {
 	let teamCityStdout, teamCityStderr, teamCityOutputArray;
 
 	before(function (done) {
-		execFile(internalMochaPath, [path.join('test', 'test_data', 'simple.js'), '--reporter', 'lib/teamcity'], (err, stdout, stderr) => {
+		execFile(internalMochaPath, [path.join('test', 'test_data', 'simple.js'), '--reporter', 'mocha-earl-reporter'], (err, stdout, stderr) => {
 			teamCityStdout = stdout;
 			teamCityStderr = stderr;
 			teamCityOutputArray = stdout.split('\n');

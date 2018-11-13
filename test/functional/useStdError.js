@@ -134,7 +134,7 @@ describe('Check TeamCity Output is correct with stdError option', function () {
 			execFile(internalMochaPath, [
 				'test/test_data',
 				'--reporter',
-				'lib/teamcity'
+				'mocha-earl-reporter'
 			], opts, (err, stdout, stderr) => {
 				teamCityStdout = stdout;
 				teamCityStderr = stderr;
@@ -152,7 +152,7 @@ describe('Check TeamCity Output is correct with stdError option', function () {
 			execFile(internalMochaPath, [
 				path.join('test', 'test_data', 'simple.js'),
 				'--reporter',
-				'lib/teamcity',
+				'mocha-earl-reporter',
 				'--reporter-options',
 				'useStdError=true'
 			], (err, stdout, stderr) => {

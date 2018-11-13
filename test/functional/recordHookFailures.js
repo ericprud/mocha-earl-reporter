@@ -144,7 +144,7 @@ describe('Check TeamCity Output is correct with recordHookFailures option', func
 			execFile(internalMochaPath, [
 				'test/example/failingHook.js',
 				'--reporter',
-				'lib/teamcity'
+				'mocha-earl-reporter'
 			], opts, (err, stdout, stderr) => {
 				teamCityStdout = stdout;
 				teamCityStderr = stderr;
@@ -162,7 +162,7 @@ describe('Check TeamCity Output is correct with recordHookFailures option', func
 			execFile(internalMochaPath, [
 				path.join('test', 'example', 'failingHook.js'),
 				'--reporter',
-				'lib/teamcity',
+				'mocha-earl-reporter',
 				'--reporter-options',
 				'recordHookFailures=true'
 			], (err, stdout, stderr) => {

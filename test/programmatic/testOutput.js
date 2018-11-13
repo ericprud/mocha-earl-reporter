@@ -13,7 +13,7 @@ describe('Can use reporter programmatically', function () {
 	before(function () {
 		// Instantiate a Mocha instance.
 		mocha = new Mocha({
-			reporter: path.join('lib', 'teamcity')
+			reporter: 'mocha-earl-reporter'
 		});
 		fs.readdirSync(testDataDir).filter(function (file){
 			// Only keep the .js files

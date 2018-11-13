@@ -57,7 +57,7 @@ describe('Check TeamCity Output is correct with outer suite', function () {
 			execFile(internalMochaPath, [
 				path.join('test', 'test_data', 'simple.js'),
 				'--reporter',
-				'lib/teamcity'
+				'mocha-earl-reporter'
 			], opts, (err, stdout, stderr) => {
 				teamCityStdout = stdout;
 				teamCityStderr = stderr;
@@ -74,7 +74,7 @@ describe('Check TeamCity Output is correct with outer suite', function () {
 			execFile(internalMochaPath, [
 				path.join('test', 'test_data', 'simple.js'),
 				'--reporter',
-				'lib/teamcity',
+				'mocha-earl-reporter',
 				'--reporter-options',
 				'topLevelSuite=test-outer-suite-name'
 			], (err, stdout, stderr) => {
