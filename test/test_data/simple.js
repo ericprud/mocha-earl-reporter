@@ -2,15 +2,15 @@
  * Created by jamie on 12/08/2017.
  */
 'use strict';
-const assert = require('assert');
+const assert = require('assert');//for(;;);
 	describe('Top Describe', function () {
-		it('Passing Test @pass', function () {
+		it('pass1', function () {
 			assert.equal(1, 1);
 		});
-		it('Failing Test @fail', function () {
+		it('fail2', function () {
 			assert.equal(2, 1);
 		});
-		it.skip('Skipped Test @skip', function () {
+		it.skip('skip3', function () {
 			assert.equal(2, 1);
 		});
 });

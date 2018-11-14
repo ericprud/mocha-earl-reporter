@@ -6,34 +6,37 @@
 'use strict';
 const util = require('util');
 
+const Top = `[ a earl:Assertion;
+  earl:assertedBy <%s>;
+  earl:subject <%s>;
+  earl:test <%s%s>;
+  earl:result [
+    a earl:TestResult;
+    earl:outcome earl:%s;
+`;
+const Extra = `    earl:message """%s""";
+    earl:details """%s""";
+`;
+const Bottom = `    dc:date "%s"^^xsd:dateTime];
+  earl:mode earl:automatic ] .
+
+`;
+
 const processPID = process.pid.toString();
-const TEST_IGNORED = `##teamcity[testIgnored name='%s' message='%s' flowId='%s']`;
-const SUITE_START = `##teamcity[testSuiteStarted name='%s' flowId='%s']`;
-const SUITE_END = `##teamcity[testSuiteFinished name='%s' duration='%s' flowId='%s']`;
-const TEST_START = `##teamcity[testStarted name='%s' captureStandardOutput='true' flowId='%s']`;
-const TEST_FAILED = `##teamcity[testFailed name='%s' message='%s' details='%s' captureStandardOutput='true' flowId='%s']`;
-const TEST_END = `##teamcity[testFinished name='%s' duration='%s' flowId='%s']`;
+const SUITE_START = `# start suite '%s'.\n\n`;
+const SUITE_END = `# end suite '%s', duration: %sms.\n\n`;
+const TEST_PASS = Top + Bottom; // asserter, subject, testPrefix, test, "passed", now()
+const TEST_FAIL = Top + Extra + Bottom; // asserter, subject, testPrefix, test, "failed", message, details, now()
+const TEST_PENDING = Top + Bottom; // asserter, subject, testPrefix, test, "skipped", now()
 let Base, log, logError;
 
-if (typeof window === 'undefined') {
-	// running in Node
-	Base = require('mocha').reporters.Base;
-	log = console.log;
-	logError = console.error;
-} else {
-	if(window.name === 'nodejs'){ // running under vuejs/webpack
-		Base = require('mocha').reporters.Base;
-		log = console.log;
-		logError = console.error;
-	} else { 	// running in mocha-phantomjs
-		log = function (msg) {
-			process.stdout.write(msg + '\n');
-		};
-		logError = function (msg) {
-			process.stderr.write(msg + '\n');
-		};
-	}
-}
+Base = require('mocha').reporters.Base;
+log = function (msg) {
+	process.stdout.write(msg);
+};
+logError = function (msg) {
+	process.stderr.write(msg);
+};
 
 /**
  * Escape the given `str`.
@@ -78,6 +81,10 @@ function formatString() {
 
 function Teamcity(runner, options) {
 	options = options || {};
+	options.reporterOptions = options.reporterOptions || {};
+	const asserter = options.reporterOptions.asserter || 'asserter';
+	const subject = options.reporterOptions.subject || 'subject';
+	const testPrefix = options.reporterOptions.testPrefix || 'testPrefix';
 	const reporterOptions = options.reporterOptions || {};
 	let flowId, useStdError, recordHookFailures;
 	(reporterOptions.flowId) ? flowId = reporterOptions.flowId : flowId = process.env['MOCHA_TEAMCITY_FLOWID'] || processPID;
@@ -100,30 +107,24 @@ function Teamcity(runner, options) {
 		log(formatString(SUITE_START, suite.title, flowId));
 	});
 
-	runner.on('test', function (test) {
-		log(formatString(TEST_START, test.title, flowId));
+	runner.on('pass', function (test, err) {
+		if (useStdError) {
+			logError(formatString(TEST_PASS, asserter, subject, testPrefix, test.title, 'passed', new Date().toISOString()));
+		} else {
+			log(formatString(TEST_PASS, asserter, subject, testPrefix, test.title, 'passed', new Date().toISOString()));
+		}
 	});
 
 	runner.on('fail', function (test, err) {
 		if (useStdError) {
-			logError(formatString(TEST_FAILED, test.title, err.message, err.stack, flowId));
+			logError(formatString(TEST_PASS, asserter, subject, testPrefix, test.title, 'failed', err.message, err.stack, new Date().toISOString()));
 		} else {
-			log(formatString(TEST_FAILED, test.title, err.message, err.stack, flowId));
+			log(formatString(TEST_FAIL, asserter, subject, testPrefix, test.title, 'failed', err.message, err.stack, new Date().toISOString()));
 		}
 	});
 
 	runner.on('pending', function (test) {
-		log(formatString(TEST_IGNORED, test.title, test.title, flowId));
-	});
-
-	runner.on('test end', function (test) {
-		log(formatString(TEST_END, test.title, test.duration, flowId));
-	});
-
-	runner.on('hook', function (test) {
-		if(recordHookFailures){
-			log(formatString(TEST_START, test.title, flowId));
-		}
+		log(formatString(TEST_PENDING, asserter, subject, testPrefix, test.title, 'skipped', new Date().toISOString()));
 	});
 
 	runner.on('suite end', function (suite) {
