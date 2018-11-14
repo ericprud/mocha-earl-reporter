@@ -1,5 +1,5 @@
 /**
- * Teamcity doc reference https://confluence.jetbrains.com/display/TCD10/Build+Script+Interaction+with+TeamCity
+ * MochaEarlReporter doc reference https://github.com/ericprud/mocha-earl-reporter#readme
  *
  * Module dependencies.
  */
@@ -72,14 +72,14 @@ function formatString() {
 
 
 /**
- * Initialize a new `Teamcity` reporter.
+ * Initialize a new `MochaEarlReporter` reporter.
  *
  * @param {Runner} runner
  * @param {options} options
  * @api public
  */
 
-function Teamcity(runner, options) {
+function MochaEarlReporter(runner, options) {
 	options = options || {};
 	options.reporterOptions = options.reporterOptions || {};
 	const asserter = options.reporterOptions.asserter || 'asserter';
@@ -87,14 +87,14 @@ function Teamcity(runner, options) {
 	const testPrefix = options.reporterOptions.testPrefix || 'testPrefix';
 	const reporterOptions = options.reporterOptions || {};
 	let flowId, useStdError, recordHookFailures;
-	(reporterOptions.flowId) ? flowId = reporterOptions.flowId : flowId = process.env['MOCHA_TEAMCITY_FLOWID'] || processPID;
+	(reporterOptions.flowId) ? flowId = reporterOptions.flowId : flowId = process.env['MOCHA_EARL_FLOWID'] || processPID;
 	(reporterOptions.useStdError) ? useStdError = reporterOptions.useStdError : useStdError = process.env['USE_STD_ERROR'];
 	(reporterOptions.recordHookFailures) ? recordHookFailures = reporterOptions.recordHookFailures : recordHookFailures = process.env['RECORD_HOOK_FAILURES'];
 	(useStdError) ? useStdError = (useStdError.toLowerCase() === 'true') : useStdError = false;
 	(recordHookFailures) ? recordHookFailures = (recordHookFailures.toLowerCase() === 'true') : recordHookFailures = false;
 	Base.call(this, runner);
 	let stats = this.stats;
-	const topLevelSuite = reporterOptions.topLevelSuite || process.env['MOCHA_TEAMCITY_TOP_LEVEL_SUITE'];
+	const topLevelSuite = reporterOptions.topLevelSuite || process.env['MOCHA_EARL_TOP_LEVEL_SUITE'];
 
 	runner.on('suite', function (suite) {
 		if (suite.root) {
@@ -142,7 +142,7 @@ function Teamcity(runner, options) {
 
 
 /**
- * Expose `Teamcity`.
+ * Expose `MochaEarlReporter`.
  */
 
-exports = module.exports = Teamcity;
+exports = module.exports = MochaEarlReporter;
